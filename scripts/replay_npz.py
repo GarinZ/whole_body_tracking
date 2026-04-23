@@ -87,6 +87,8 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
     artifact = api.artifact(registry_name)
     motion_file = str(pathlib.Path(artifact.download()) / "motion.npz")
 
+    print(f"[INFO] Motion file: {motion_file}")
+
     motion = MotionLoader(
         motion_file,
         torch.tensor([0], dtype=torch.long, device=sim.device),
