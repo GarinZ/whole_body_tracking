@@ -17,6 +17,8 @@ from isaaclab.app import AppLauncher
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Replay converted motions.")
 parser.add_argument("--registry_name", type=str, required=True, help="The name of the wand registry.")
+parser.add_argument("--robot", type=str, default="g1", choices=["g1", "pm01_edu"],
+                    help="Robot to use for motion replay.")
 
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
@@ -40,6 +42,7 @@ from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 # Pre-defined configs
 ##
 from whole_body_tracking.robots.g1 import G1_CYLINDER_CFG
+from whole_body_tracking.robots.pm01_edu import PM01_EDU_CFG
 from whole_body_tracking.tasks.tracking.mdp import MotionLoader
 
 
@@ -58,7 +61,13 @@ class ReplayMotionsSceneCfg(InteractiveSceneCfg):
     )
 
     # articulation
-    robot: ArticulationCfg = G1_CYLINDER_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+    robot: ArticulationCfg = G1_CYLINDER_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")  # default, overridden in main()
+
+
+ROBOT_CONFIGS = {
+    "g1": G1_CYLINDER_CFG,
+    "pm01_edu": PM01_EDU_CFG,
+}
 
 
 def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene):
@@ -113,6 +122,7 @@ def main():
     sim = SimulationContext(sim_cfg)
 
     scene_cfg = ReplayMotionsSceneCfg(num_envs=1, env_spacing=2.0)
+    scene_cfg.robot = ROBOT_CONFIGS[args_cli.robot].replace(prim_path="{ENV_REGEX_NS}/Robot")
     scene = InteractiveScene(scene_cfg)
     sim.reset()
     # Run the simulator
