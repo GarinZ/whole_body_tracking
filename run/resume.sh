@@ -1,0 +1,12 @@
+isaaclab -p scripts/rsl_rl/train.py \
+    --task=Tracking-Flat-PM01Edu-v0 \
+    --registry_name garinzh-mimic-org/wandb-registry-motions/Taichi \
+    --resume True \
+    --load_run 2026-04-23_20-16-18_pm01_taichi_run2_8192 \
+    --checkpoint model_2999.pt \
+    --max_iterations 2000 \
+    --num_envs 8192 \
+    --headless \
+    --logger wandb \
+    --log_project_name whole-body-tracking \
+    --run_name pm01_taichi_continue_2000

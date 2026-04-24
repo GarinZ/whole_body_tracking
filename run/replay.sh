@@ -1,0 +1,1 @@
+python scripts/replay_npz.py --robot=pm01_edu --registry_name=garinzh-mimic-org/wandb-registry-motions/Taichi
